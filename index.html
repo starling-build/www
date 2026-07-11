@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Starling — a desktop built like one app</title>
-<meta name="description" content="Most Linux desktops are a dozen programs glued together. Starling is one application — compositor, window manager, dock and apps in a single natively rendered program. Wayland and X11 both native. Tiling and floating both built in. Real optical glass, no CSS tricks.">
+<meta name="description" content="Most Linux desktops are a dozen programs glued together. Starling is one application — compositor, window manager, dock and apps in a single natively rendered program. It owns the whole stack, so every kind of app has a home: Wayland and X11 both native, tiling and floating built in, real optical glass.">
 <meta property="og:title" content="Starling — a desktop built like one app">
-<meta property="og:description" content="One application instead of a dozen glued together. Wayland and X11 both native. Tiling and floating both built in. Real glass, rendered on the GPU.">
+<meta property="og:description" content="One application instead of a dozen glued together. It owns the whole stack, so every kind of app has a home. Wayland and X11 both native. Tiling and floating built in. Real glass, rendered on the GPU.">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐦</text></svg>">
 <style>
@@ -263,6 +263,7 @@
     </a>
     <nav class="nav-links">
       <a href="#idea">The idea</a>
+      <a href="#apps">For apps</a>
       <a href="#built-in">Built in</a>
       <a href="#install">Install</a>
     </nav>
@@ -278,8 +279,9 @@
       <p class="lede">
         A complete desktop environment — compositor, window manager, menu bar,
         dock and a full set of apps — designed as one program, not a dozen
-        assembled parts. That's why everything shares one look, and why the
-        things other desktops bolt on are simply built into this one.
+        assembled parts. That's why everything shares one look, why the things
+        other desktops bolt on are simply built in — and why every kind of
+        application has a home here.
       </p>
       <div class="cta">
         <a class="btn btn-primary" href="#install">Install Starling</a>
@@ -336,6 +338,53 @@
             <li>One theme, everything, instantly</li>
             <li>They're the same program</li>
           </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="apps">
+    <div class="wrap narrow thesis">
+      <div class="kicker">For applications</div>
+      <h2 style="margin-bottom:28px">The desktop isn't the point.<br>Your applications are.</h2>
+      <p>
+        Nobody sits down to use a desktop. You sit down to use Chrome, Zoom, a
+        terminal, an editor — and the desktop's whole job is to carry them well.
+        Starling is built around that job, with one unusual advantage: it
+        doesn't just draw the desktop, it owns the entire stack underneath it.
+      </p>
+      <p>
+        <strong>The rendering engine, the UI framework, the window manager, the
+        compositor — even an X server — are one codebase, changed by one
+        team.</strong> So nothing an application needs is someone else's
+        problem. When Zoom needed X11, Starling grew its own X server. When
+        apps needed portals and audio routing, those went in too. Features,
+        not negotiations across five upstream projects.
+      </p>
+      <p>
+        That's what owning every layer buys. The kinds of applications — and
+        the kinds of ideas — that die on an assembled desktop, waiting on a
+        compositor patch, a toolkit fork and a window-manager extension to all
+        agree, are simply possible here. If your idea needs the desktop to do
+        something no desktop does, this one can learn it.
+      </p>
+
+      <div class="specs" style="margin-top:52px">
+        <div class="spec">
+          <div class="n">Wayland</div>
+          <div class="l">Native clients, GPU buffers shared zero-copy</div>
+        </div>
+        <div class="spec">
+          <div class="n">X11</div>
+          <div class="l">A real X server, living inside the desktop</div>
+        </div>
+        <div class="spec">
+          <div class="n">Electron</div>
+          <div class="l">Chrome, Slack — everything web-built just runs</div>
+        </div>
+        <div class="spec">
+          <div class="n">Your idea</div>
+          <div class="l">Every layer of the stack, open to change</div>
         </div>
       </div>
     </div>

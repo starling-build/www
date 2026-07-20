@@ -171,6 +171,30 @@
     border-radius: 6px; padding: 2px 9px; margin-top: 16px;
   }
 
+  /* ---------- alternating feature blocks ---------- */
+  .feature {
+    display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 52px;
+    align-items: center; margin-bottom: 72px;
+  }
+  .feature.reverse .feature-text { order: 2; }
+  @media (max-width: 900px) {
+    .feature { grid-template-columns: 1fr; gap: 28px; margin-bottom: 56px; }
+    .feature.reverse .feature-text { order: 0; }
+  }
+  .feature h3 { font-size: 24px; margin-bottom: 14px; }
+  .feature .feature-text p { color: var(--ink-dim); font-size: 16px; }
+  .feature .feature-text p + p { margin-top: 14px; }
+  .feature figure { margin: 0; }
+  .feature figure img {
+    border-radius: 10px; border: 1px solid var(--line);
+    box-shadow: 0 18px 50px rgba(0,0,0,0.45);
+  }
+  .feature figcaption {
+    font-size: 13.5px; color: var(--ink-faint); margin-top: 12px; text-align: center;
+  }
+  .grid.two-up { grid-template-columns: repeat(2, 1fr); margin-top: 8px; }
+  @media (max-width: 760px) { .grid.two-up { grid-template-columns: 1fr; } }
+
   /* ---------- split ---------- */
   .split { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
   @media (max-width: 860px) { .split { grid-template-columns: 1fr; gap: 36px; } }
@@ -325,48 +349,97 @@
         <h2>What falls out of that</h2>
         <p>
           These aren't features layered on top. They're what you get when the whole
-          desktop is one application with one view of the world.
+          desktop is one application with one view of the world. Every screenshot
+          below is the real thing, captured from a running session.
         </p>
       </div>
 
-      <div class="grid">
-        <div class="card">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-            <rect x="2.2" y="4.5" width="19.6" height="14" rx="2"/>
-            <path d="M12 4.5v14"/><path d="M2.2 11.5h19.6"/>
-          </svg>
-          <h3>Wayland and X11, both native</h3>
+      <div class="feature">
+        <div class="feature-text">
+          <h3>Tiling and floating, both first-class</h3>
           <p>
-            Both display servers live inside Starling — a full Wayland compositor
-            and a real X server, side by side. Modern apps and X11-only holdouts
-            run together, composited into the same scene, on the same GPU path.
+            Floating windows by default. Flip one switch and everything arranges
+            itself master-and-stack, the way a tiling window manager does — your
+            browser holding the master pane, everything else stacked beside it.
           </p>
           <p>
-            You never choose a session type at login, and you never find an app you
-            can't run because you picked the wrong one.
+            Flip it back and every window returns to exactly where it was floating.
+            No extension, no separate desktop to switch to, nothing to relearn.
+          </p>
+          <span class="tag">Settings → Appearance → Tiling Windows</span>
+        </div>
+        <figure>
+          <img src="img/tiling.jpg" width="2000" height="1125" loading="lazy"
+               alt="The Starling desktop with tiling enabled: Chrome holds the left half showing a Wikipedia article, with Slack, Files and Settings stacked down the right half.">
+          <figcaption>Tiling on — Chrome, Slack, Files and Settings arranged automatically.</figcaption>
+        </figure>
+      </div>
+
+      <div class="feature reverse">
+        <div class="feature-text">
+          <h3>Wayland and X11, both native</h3>
+          <p>
+            Both display servers live inside Starling. Modern Wayland apps and
+            X11-only holdouts run side by side, composited into the same scene on
+            the same GPU path — Chrome, Slack, browsers, editors, chat.
+          </p>
+          <p>
+            You never choose a session type at login, and you never discover an app
+            you can't run because you picked the wrong one.
           </p>
           <span class="tag">Chrome · Slack · VS Code · Qt · GTK · X11 apps</span>
         </div>
+        <figure>
+          <img src="img/chrome.jpg" width="1800" height="1013" loading="lazy"
+               alt="Google Chrome running full-screen on Starling, displaying the Golden Gate Bridge Wikipedia article, with the Starling dock at the bottom.">
+          <figcaption>Chrome, composited natively — not streamed, not emulated.</figcaption>
+        </figure>
+      </div>
 
-        <div class="card">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-            <rect x="2.5" y="4.5" width="9" height="15" rx="1.6"/>
-            <rect x="13.5" y="4.5" width="8" height="7" rx="1.6"/>
-            <rect x="13.5" y="12.5" width="8" height="7" rx="1.6"/>
-          </svg>
-          <h3>Tiling and floating, both first-class</h3>
+      <div class="feature">
+        <div class="feature-text">
+          <h3>Spaces and Mission Control</h3>
           <p>
-            Floating windows by default. Turn on tiling in Settings and windows
-            arrange themselves master-and-stack, the way a tiling WM does — then
-            turn it off and every window returns to exactly where it was floating.
+            Slide between virtual desktops, carry a window along as you go, or pull
+            back with one key and see every space at once. Anything you send
+            fullscreen quietly becomes a space of its own.
           </p>
           <p>
-            Not an extension, not a different desktop you have to switch to. One
-            switch, same session.
+            Drag a window between spaces from the overview, or add a new one from
+            the strip along the top.
           </p>
-          <span class="tag">Settings → Tiling Windows</span>
+          <span class="tag">Ctrl + ↑ for the overview · Ctrl + ← → to switch</span>
         </div>
+        <figure>
+          <img src="img/spaces.jpg" width="2000" height="1125" loading="lazy"
+               alt="Mission Control on Starling: a strip of space thumbnails across the top, with the current space's windows spread out below over the wallpaper.">
+          <figcaption>Mission Control — spaces along the top, windows spread below.</figcaption>
+        </figure>
+      </div>
 
+      <div class="feature reverse">
+        <div class="feature-text">
+          <h3>Monitors that behave</h3>
+          <p>
+            Every display gets its own menu bar, its own wallpaper and its own
+            spaces. Drag a window across the seam and it settles onto the new
+            screen at that screen's scale.
+          </p>
+          <p>
+            Unplug a monitor and its windows come home instead of vanishing off
+            into nowhere. Plug it back in and the desktop picks up where it left
+            off.
+          </p>
+          <span class="tag">Hot-plug · per-display scale · per-display spaces</span>
+        </div>
+        <figure>
+          <img src="img/multimonitor.jpg" width="2200" height="708" loading="lazy"
+               alt="Two monitors side by side on Starling, each with its own menu bar and wallpaper. The Files window has been dragged onto the second display.">
+          <figcaption>Two displays, one desktop — Files dragged onto the second screen.</figcaption>
+        </figure>
+      </div>
+
+      <div class="grid two-up">
         <div class="card">
           <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
             <circle cx="12" cy="12" r="8.6"/>
@@ -435,8 +508,8 @@
           </ul>
         </div>
         <div>
-          <img src="img/settings.jpg" width="1800" height="1013"
-               alt="The Starling Settings app open on the desktop, showing system information.">
+          <img src="img/slack.jpg" width="1600" height="900" loading="lazy"
+               alt="Slack running as a native window on the Starling desktop.">
         </div>
       </div>
     </div>

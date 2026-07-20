@@ -264,7 +264,6 @@
     <nav class="nav-links">
       <a href="#idea">The idea</a>
       <a href="#built-in">Built in</a>
-      <a href="#agents">Agents</a>
       <a href="#install">Install</a>
     </nav>
   </div>
@@ -290,7 +289,7 @@
     <div class="wrap">
       <div class="shot">
         <img src="img/desktop.jpg" width="2400" height="1350"
-             alt="The Starling desktop: a Golden Gate Bridge wallpaper at blue hour, with the Files and Terminal windows open and a glass dock along the bottom edge.">
+             alt="The Starling desktop: Terminal, Google Chrome showing a Wikipedia article, and Slack, all open as floating windows over a Golden Gate Bridge wallpaper, with a glass dock along the bottom edge.">
       </div>
     </div>
   </div>
@@ -508,65 +507,9 @@
           </ul>
         </div>
         <div>
-          <img src="img/slack.jpg" width="1600" height="900" loading="lazy"
-               alt="Slack running as a native window on the Starling desktop.">
+          <img src="img/clean.jpg" width="1800" height="1013" loading="lazy"
+               alt="The Starling desktop with no windows open — wallpaper, menu bar and glass dock.">
         </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="agents">
-    <div class="wrap">
-      <div class="section-head">
-        <div class="kicker">Agents</div>
-        <h2>Where AI agents are tenants, not visitors</h2>
-        <p>
-          Being one application pays off here too: the desktop already knows what
-          every window contains, so an agent doesn't have to guess from a
-          screenshot.
-        </p>
-      </div>
-      <div class="split">
-        <div>
-          <ul class="bullets">
-            <li><strong>Their own space.</strong> Agents work in a dedicated AI
-              Space with their own windows — visible when you want to watch, out of
-              the way when you don't.</li>
-            <li><strong>They act by label, not by pixel.</strong> An agent clicks
-              <em>Save</em> because it found Save — not because something looked
-              like a button at those coordinates.</li>
-            <li><strong>Permission is explicit.</strong> Every capability goes
-              through a broker that denies by default and records what was
-              granted.</li>
-            <li><strong>Even Windows apps.</strong> Excel, Word and PowerPoint
-              appear as ordinary windows here, and agents drive them through the
-              real application — formulas and all.</li>
-          </ul>
-        </div>
-        <div>
-          <img src="img/clean.jpg" width="1800" height="1013"
-               alt="The Starling desktop with no windows open, showing the wallpaper, menu bar and glass dock.">
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="under-the-hood">
-    <div class="wrap">
-      <div class="section-head">
-        <div class="kicker">Under the hood</div>
-        <h2>How one program does all of it</h2>
-        <p>
-          Starling is built on Flutter's rendering engine — but the entire framework
-          above it was rewritten in Swift, and the desktop it draws is also the
-          display server.
-        </p>
-      </div>
-      <div class="specs">
-        <div class="spec"><div class="n">191k</div><div class="l">lines of Swift — the UI framework, ported from Dart</div></div>
-        <div class="spec"><div class="n">0</div><div class="l">interpreters or VMs at runtime</div></div>
-        <div class="spec"><div class="n">2</div><div class="l">display servers built in — Wayland and X11</div></div>
-        <div class="spec"><div class="n">1</div><div class="l">process drawing the entire desktop</div></div>
       </div>
     </div>
   </section>

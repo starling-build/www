@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Starling — a desktop environment for Linux</title>
+<meta name="description" content="Starling is a Linux desktop environment written in Swift. It runs directly on the GPU, composites your real apps natively, and treats AI agents as first-class tenants.">
+<meta property="og:title" content="Starling — a desktop environment for Linux">
+<meta property="og:description" content="Written in Swift. Runs directly on the GPU. Built for agents.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐦</text></svg>">
+<style>
+  :root {
+    --bg:        #0a0e17;
+    --bg-raised: #111726;
+    --line:      #1e2739;
+    --ink:       #eef2f8;
+    --ink-dim:   #97a3b8;
+    --ink-faint: #64708a;
+    --amber:     #f0a02a;
+    --amber-soft:#fbbf5c;
+    --sky:       #5aa9e6;
+    --maxw:      1120px;
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto,
+                 "Helvetica Neue", Arial, sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { max-width: 100%; height: auto; display: block; }
+  a { color: var(--amber-soft); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+  h1, h2, h3 { line-height: 1.15; letter-spacing: -0.02em; margin: 0; }
+  h2 { font-size: clamp(28px, 4vw, 40px); }
+  h3 { font-size: 19px; letter-spacing: -0.01em; }
+  p  { margin: 0; }
+
+  /* ---------- header ---------- */
+  header {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(10, 14, 23, 0.82);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav { display: flex; align-items: center; justify-content: space-between;
+         height: 62px; gap: 16px; }
+  .brand { display: flex; align-items: center; gap: 10px;
+           font-weight: 650; letter-spacing: -0.02em; font-size: 17px;
+           color: var(--ink); }
+  .brand:hover { text-decoration: none; }
+  .mark { width: 22px; height: 22px; flex: none; }
+  .nav-links { display: flex; gap: 26px; font-size: 15px; }
+  .nav-links a { color: var(--ink-dim); }
+  .nav-links a:hover { color: var(--ink); text-decoration: none; }
+  @media (max-width: 620px) { .nav-links { display: none; } }
+
+  /* ---------- hero ---------- */
+  .hero { position: relative; padding: 88px 0 0; overflow: hidden; }
+  .hero::before {
+    content: ""; position: absolute; inset: -20% 0 auto 0; height: 620px;
+    background:
+      radial-gradient(60% 70% at 50% 0%, rgba(240,160,42,0.13), transparent 70%),
+      radial-gradient(50% 60% at 15% 10%, rgba(90,169,230,0.10), transparent 70%);
+    pointer-events: none;
+  }
+  .hero-inner { position: relative; text-align: center; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 9px;
+    font-size: 13px; font-weight: 550; letter-spacing: 0.02em;
+    color: var(--ink-dim);
+    border: 1px solid var(--line); background: var(--bg-raised);
+    padding: 6px 14px; border-radius: 999px; margin-bottom: 26px;
+  }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--amber);
+         box-shadow: 0 0 0 3px rgba(240,160,42,0.18); }
+  .hero h1 {
+    font-size: clamp(40px, 7vw, 72px); font-weight: 680;
+    letter-spacing: -0.035em; margin-bottom: 22px;
+  }
+  .hero h1 .accent {
+    background: linear-gradient(100deg, var(--amber-soft), var(--sky));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .lede {
+    font-size: clamp(17px, 2.2vw, 21px); color: var(--ink-dim);
+    max-width: 620px; margin: 0 auto 34px;
+  }
+  .cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 22px; border-radius: 10px; font-size: 15px; font-weight: 560;
+    border: 1px solid transparent; transition: transform .12s ease, background .15s ease;
+  }
+  .btn:hover { text-decoration: none; transform: translateY(-1px); }
+  .btn-primary { background: var(--amber); color: #17120a; }
+  .btn-primary:hover { background: var(--amber-soft); }
+  .btn-ghost { border-color: var(--line); color: var(--ink); background: var(--bg-raised); }
+  .btn-ghost:hover { border-color: #2c3852; }
+
+  .shot {
+    margin-top: 56px; border-radius: 12px 12px 0 0;
+    border: 1px solid var(--line); border-bottom: none;
+    overflow: hidden; box-shadow: 0 -1px 60px rgba(0,0,0,0.6);
+  }
+  .shot img { border-radius: 11px 11px 0 0; }
+
+  /* ---------- sections ---------- */
+  section { padding: 96px 0; border-top: 1px solid var(--line); }
+  section:first-of-type { border-top: none; }
+  .section-head { max-width: 660px; margin-bottom: 52px; }
+  .kicker {
+    font-size: 13px; font-weight: 620; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--amber); margin-bottom: 14px;
+  }
+  .section-head p { color: var(--ink-dim); margin-top: 16px; font-size: 18px; }
+
+  .grid { display: grid; gap: 22px; grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 620px) { .grid { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--bg-raised); border: 1px solid var(--line);
+    border-radius: 12px; padding: 26px;
+  }
+  .card h3 { margin-bottom: 10px; }
+  .card p { color: var(--ink-dim); font-size: 15.5px; }
+  .icon { width: 26px; height: 26px; margin-bottom: 16px; color: var(--amber); }
+
+  /* ---------- split ---------- */
+  .split {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center;
+  }
+  @media (max-width: 860px) { .split { grid-template-columns: 1fr; gap: 36px; } }
+  .split img { border-radius: 10px; border: 1px solid var(--line); }
+  .split p { color: var(--ink-dim); margin-top: 16px; }
+  .bullets { list-style: none; padding: 0; margin: 22px 0 0; }
+  .bullets li {
+    position: relative; padding-left: 26px; margin-bottom: 12px;
+    color: var(--ink-dim); font-size: 15.5px;
+  }
+  .bullets li::before {
+    content: ""; position: absolute; left: 4px; top: 9px;
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--amber); opacity: .85;
+  }
+  .bullets strong { color: var(--ink); font-weight: 560; }
+
+  /* ---------- under the hood ---------- */
+  .specs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+           background: var(--line); border: 1px solid var(--line);
+           border-radius: 12px; overflow: hidden; }
+  @media (max-width: 780px) { .specs { grid-template-columns: repeat(2, 1fr); } }
+  .spec { background: var(--bg-raised); padding: 26px 22px; }
+  .spec .n { font-size: 27px; font-weight: 650; letter-spacing: -0.02em;
+             color: var(--ink); }
+  .spec .l { font-size: 13.5px; color: var(--ink-faint); margin-top: 6px; }
+
+  /* ---------- install ---------- */
+  .install { background: var(--bg-raised); border: 1px solid var(--line);
+             border-radius: 14px; padding: 38px; }
+  pre {
+    background: #070a11; border: 1px solid var(--line); border-radius: 9px;
+    padding: 18px 20px; overflow-x: auto; margin: 22px 0 0;
+    font-size: 14px; line-height: 1.7;
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    color: #cfd8e6;
+  }
+  pre .c { color: var(--ink-faint); }
+  pre .p { color: var(--amber-soft); }
+  .note {
+    margin-top: 22px; padding: 16px 18px; font-size: 14.5px;
+    border-left: 2px solid var(--amber); background: rgba(240,160,42,0.06);
+    color: var(--ink-dim); border-radius: 0 8px 8px 0;
+  }
+  .note strong { color: var(--ink); font-weight: 560; }
+
+  footer {
+    border-top: 1px solid var(--line); padding: 44px 0 60px;
+    color: var(--ink-faint); font-size: 14.5px;
+  }
+  .foot { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+  .foot a { color: var(--ink-dim); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top">
+      <svg class="mark" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M3 15c4.5 0 7-2.2 9-5.2C13.6 7.4 15.7 5 18.4 5c1.7 0 2.6 1 2.6 2.3 0 3.6-3.4 5.4-6.2 5.4"
+              stroke="url(#g)" stroke-width="1.9" stroke-linecap="round"/>
+        <path d="M3 15c3.4 3.9 8.2 4.6 11.6 2.4" stroke="url(#g)" stroke-width="1.9" stroke-linecap="round"/>
+        <circle cx="17.4" cy="8.1" r="1.05" fill="#f0a02a"/>
+        <defs><linearGradient id="g" x1="3" y1="5" x2="21" y2="18">
+          <stop stop-color="#fbbf5c"/><stop offset="1" stop-color="#5aa9e6"/>
+        </linearGradient></defs>
+      </svg>
+      Starling
+    </a>
+    <nav class="nav-links">
+      <a href="#desktop">Desktop</a>
+      <a href="#agents">Agents</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#install">Install</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <div class="hero">
+    <div class="wrap hero-inner">
+      <span class="eyebrow"><span class="dot"></span> Early preview · v0.1 · Ubuntu</span>
+      <h1>A desktop environment<br>built <span class="accent">for what comes next</span></h1>
+      <p class="lede">
+        Starling is a Linux desktop written in Swift. It runs directly on the GPU,
+        composites your real apps natively, and treats AI agents as first-class
+        tenants rather than visitors.
+      </p>
+      <div class="cta">
+        <a class="btn btn-primary" href="#install">Install Starling</a>
+        <a class="btn btn-ghost" href="#architecture">How it works</a>
+      </div>
+    </div>
+    <div class="wrap">
+      <div class="shot">
+        <img src="img/desktop.jpg" width="2400" height="1350"
+             alt="The Starling desktop: a Golden Gate Bridge wallpaper at blue hour, with the Files and Terminal windows open and a dock along the bottom edge.">
+      </div>
+    </div>
+  </div>
+
+  <section id="desktop">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="kicker">The desktop</div>
+        <h2>Everything you expect, and it's fast</h2>
+        <p>
+          A complete desktop environment — not a window manager you assemble
+          yourself. Spaces, a dock, a menu bar, real multi-monitor support, and a
+          set of first-party apps that come with it.
+        </p>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+            <rect x="2.5" y="4" width="19" height="13" rx="2"/><path d="M8 20.5h8"/><path d="M12 17v3.5"/>
+          </svg>
+          <h3>Straight to the hardware</h3>
+          <p>Starling talks to the GPU directly through DRM/KMS. There's no X server
+             and no second compositor underneath it — one less layer between your
+             input and the pixels.</p>
+        </div>
+        <div class="card">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+            <rect x="3" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"/>
+            <rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"/>
+          </svg>
+          <h3>Spaces &amp; Mission Control</h3>
+          <p>Slide between virtual desktops, carry a window with you as you go, and
+             pull back to see everything at once. Fullscreen apps get a space of
+             their own.</p>
+        </div>
+        <div class="card">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+            <rect x="2" y="5" width="13" height="9.5" rx="1.6"/><rect x="15.5" y="9" width="6.5" height="10" rx="1.4"/>
+          </svg>
+          <h3>Monitors that just work</h3>
+          <p>Plug a display in and it appears — with its own dock, its own menu bar
+             and its own spaces. Unplug it and your windows come home instead of
+             vanishing.</p>
+        </div>
+        <div class="card">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+            <circle cx="12" cy="12" r="9"/><path d="M3.2 12h17.6"/>
+            <path d="M12 3.1c2.3 2.4 3.6 5.6 3.6 8.9s-1.3 6.5-3.6 8.9c-2.3-2.4-3.6-5.6-3.6-8.9S9.7 5.5 12 3.1z"/>
+          </svg>
+          <h3>Your real apps</h3>
+          <p>Chrome, Slack, VS Code, Zoom, mpv, GTK and Qt apps — composited
+             natively with zero-copy GPU buffers, not streamed or emulated. An X
+             server is built in for the holdouts.</p>
+        </div>
+        <div class="card">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+            <path d="M4 6.5h16"/><path d="M4 12h16"/><path d="M4 17.5h10"/>
+          </svg>
+          <h3>Apps included</h3>
+          <p>Files, Terminal, Settings, Calculator, Text Editor, Image Viewer and an
+             App Store that installs software from the Ubuntu archive — each one a
+             separate process.</p>
+        </div>
+        <div class="card">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+            <path d="M12 3.2l7.5 4v5.4c0 4.2-3 7-7.5 8.2-4.5-1.2-7.5-4-7.5-8.2V7.2z"/>
+          </svg>
+          <h3>Crashes stay contained</h3>
+          <p>Every app runs in its own process and shares GPU buffers with the shell.
+             When one falls over it takes its window with it — and nothing else.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="agents">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="kicker">Agents</div>
+        <h2>The first desktop where agents are tenants</h2>
+        <p>
+          Most tools bolt AI onto a desktop by screenshotting it and guessing at
+          coordinates. Starling gives agents a place to live and a proper way in.
+        </p>
+      </div>
+      <div class="split">
+        <div>
+          <ul class="bullets">
+            <li><strong>Their own space.</strong> Agents work in a dedicated AI Space
+              with their own windows — visible when you want to watch, out of the way
+              when you don't.</li>
+            <li><strong>They act by label, not by pixel.</strong> The desktop exposes
+              what's actually on screen, so an agent clicks <em>Save</em> because it
+              found Save — not because something looked like a button at those
+              coordinates.</li>
+            <li><strong>Permission is explicit.</strong> Every capability an agent
+              asks for goes through a broker that denies by default and records what
+              was granted.</li>
+            <li><strong>Even Windows apps.</strong> Excel, Word and PowerPoint appear
+              as ordinary windows on your desktop, and agents drive them through the
+              real application — formulas and all.</li>
+          </ul>
+        </div>
+        <div>
+          <img src="img/settings.jpg" width="1800" height="1013"
+               alt="The Starling Settings app open on the desktop, showing system information over the wallpaper.">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="architecture">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="kicker">Under the hood</div>
+        <h2>An unusual foundation</h2>
+        <p>
+          Starling is built on Flutter's rendering engine — but the entire framework
+          above it was rewritten in Swift, and the desktop it draws is also the
+          display server and the compositor.
+        </p>
+      </div>
+
+      <div class="specs">
+        <div class="spec"><div class="n">191k</div><div class="l">lines of Swift — the UI framework, ported from Dart</div></div>
+        <div class="spec"><div class="n">0</div><div class="l">virtual machines or interpreters at runtime</div></div>
+        <div class="spec"><div class="n">7.1k</div><div class="l">lines of C — the Wayland compositor, inside the shell</div></div>
+        <div class="spec"><div class="n">5.4k</div><div class="l">lines of C++ — the DRM/KMS display engine</div></div>
+      </div>
+
+      <div class="split" style="margin-top:56px">
+        <div>
+          <h3>Swift all the way up</h3>
+          <p>
+            Flutter's framework — widgets, layout, painting, gestures, animation —
+            was ported from Dart to Swift and compiles ahead of time. Flutter's
+            battle-tested rendering model, with a natively compiled language and no
+            runtime to warm up.
+          </p>
+          <h3 style="margin-top:30px">The shell <em>is</em> the compositor</h3>
+          <p>
+            Normally a compositor hosts your toolkit. Starling inverts that: a
+            Wayland compositor lives inside the desktop itself, so a Chrome window is
+            a texture in the same scene as the dock — sharing GPU memory, never
+            copied.
+          </p>
+        </div>
+        <div>
+          <img src="img/clean.jpg" width="1800" height="1013"
+               alt="The Starling desktop with no windows open, showing the wallpaper, menu bar and dock.">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="install">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="kicker">Install</div>
+        <h2>One package, then pick Starling at login</h2>
+      </div>
+      <div class="install">
+        <pre><span class="c"># Ubuntu 25.10 or 26.04, on an amd64 machine</span>
+<span class="p">sudo</span> apt install ./starling-desktop_0.1-1_amd64.deb
+
+<span class="c"># then log out, choose "Starling" from the session menu, and sign in</span></pre>
+        <div class="note">
+          <strong>This is an early preview.</strong> Starling runs a real desktop on
+          real hardware today, but it is version 0.1: expect rough edges, missing
+          settings, and apps that still need work. It has been tested on AMD
+          graphics with Ubuntu 25.10 and 26.04.
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div>Starling — a desktop environment for Linux.</div>
+    <div>
+      <a href="https://github.com/starling-build/starling-desktop">Desktop source</a> ·
+      <a href="https://github.com/starling-build/starling-engine">Engine source</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

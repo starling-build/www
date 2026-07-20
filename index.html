@@ -376,17 +376,18 @@
 
       <div class="feature reverse">
         <div class="feature-text">
-          <h3>Wayland and X11, both native</h3>
+          <h3>Your apps, composited natively</h3>
           <p>
-            Both display servers live inside Starling. Modern Wayland apps and
-            X11-only holdouts run side by side, composited into the same scene on
-            the same GPU path — Chrome, Slack, browsers, editors, chat.
+            The Wayland compositor lives inside Starling, so Chrome, Slack and
+            other Wayland apps become textures in the same scene as the dock —
+            sharing GPU memory, never copied, never streamed.
           </p>
           <p>
-            You never choose a session type at login, and you never discover an app
-            you can't run because you picked the wrong one.
+            An X server is built in alongside it, running X11 clients on that same
+            GPU path. Both display servers, one desktop, no session type to pick
+            at login.
           </p>
-          <span class="tag">Chrome · Slack · VS Code · Qt · GTK · X11 apps</span>
+          <span class="tag">Chrome · Slack · Electron · GTK · GPU-accelerated X11</span>
         </div>
         <figure>
           <img src="img/chrome.jpg" width="1800" height="1013" loading="lazy"

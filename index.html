@@ -376,23 +376,24 @@
 
       <div class="feature reverse">
         <div class="feature-text">
-          <h3>Your apps, composited natively</h3>
+          <h3>Wayland and X11, both native</h3>
           <p>
-            The Wayland compositor lives inside Starling, so Chrome, Slack and
-            other Wayland apps become textures in the same scene as the dock —
-            sharing GPU memory, never copied, never streamed.
+            Both display servers live inside Starling. Chrome is a Wayland
+            client; Zoom is an X11 one. They sit on the same desktop, in the
+            same scene, on the same GPU path — sharing memory, never copied,
+            never streamed.
           </p>
           <p>
-            An X server is built in alongside it, running X11 clients on that same
-            GPU path. Both display servers, one desktop, no session type to pick
-            at login.
+            You don't pick a session type at login, and X11 apps keep the things
+            X11 is still good at — grabbing the whole screen for recording,
+            without a portal in the way.
           </p>
-          <span class="tag">Chrome · Slack · Electron · GTK · GPU-accelerated X11</span>
+          <span class="tag">Chrome · Slack · Electron · GTK on Wayland · Zoom on X11</span>
         </div>
         <figure>
-          <img src="img/chrome.jpg" width="1800" height="1013" loading="lazy"
-               alt="Google Chrome running full-screen on Starling, displaying the Golden Gate Bridge Wikipedia article, with the Starling dock at the bottom.">
-          <figcaption>Chrome, composited natively — not streamed, not emulated.</figcaption>
+          <img src="img/wayland-x11.jpg" width="2000" height="1125" loading="lazy"
+               alt="The Starling desktop with Zoom Workplace open as an X11 client and Google Chrome open as a Wayland client, both composited into the same desktop over the wallpaper.">
+          <figcaption>Zoom on X11 and Chrome on Wayland — one desktop, one GPU path.</figcaption>
         </figure>
       </div>
 

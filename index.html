@@ -192,8 +192,8 @@
   .feature figcaption {
     font-size: 13.5px; color: var(--ink-faint); margin-top: 12px; text-align: center;
   }
-  .grid.two-up { grid-template-columns: repeat(2, 1fr); margin-top: 8px; }
-  @media (max-width: 760px) { .grid.two-up { grid-template-columns: 1fr; } }
+  .card.wide { max-width: 100%; }
+  .card.wide p { max-width: 68ch; }
 
   /* ---------- split ---------- */
   .split { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
@@ -439,43 +439,42 @@
         </figure>
       </div>
 
-      <div class="grid two-up">
-        <div class="card">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-            <circle cx="12" cy="12" r="8.6"/>
-            <path d="M7.4 16.8c1.6-5 4.6-8.2 9-9.6"/>
-            <path d="M10.6 19.4c1-3.2 2.9-5.3 5.8-6.2"/>
-          </svg>
+      <div class="feature">
+        <div class="feature-text">
           <h3>Real glass, not a CSS trick</h3>
           <p>
-            The dock and panels don't fake depth with a blur filter. A shader gives
-            each panel actual thickness, derives a surface normal from it, and bends
-            the view ray through that normal with Snell's law — then adds a Fresnel
-            rim and a specular highlight riding the same surface.
+            The dock and panels don't fake depth with a blur filter. A shader
+            gives each panel real thickness, derives a surface normal from it,
+            and bends the view ray through that normal with Snell's law — then
+            adds a Fresnel rim and a specular highlight riding the same surface.
           </p>
           <p>
-            It refracts what's behind it because it is doing refraction, on the GPU,
-            every frame.
+            Look at the text passing behind the dock: it doesn't just blur, it
+            <em>bends</em> and compresses toward the rounded ends, the way it
+            would through a real piece of glass. A blur filter cannot do that.
           </p>
           <span class="tag">Physically-based · GPU fragment shader</span>
         </div>
+        <figure>
+          <img src="img/glass.jpg" width="1760" height="370" loading="lazy"
+               alt="Close-up of the Starling dock sitting over a web page. The text behind it is blurred and visibly bent and displaced where it passes through the dock's curved ends, with a bright rim along the edge.">
+          <figcaption>The dock over a web page — text bending through the glass.</figcaption>
+        </figure>
+      </div>
 
-        <div class="card">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-            <path d="M12 3.4l8.4 4.8v9.6L12 22.6 3.6 17.8V8.2z"/>
-            <path d="M3.6 8.2L12 13l8.4-4.8"/><path d="M12 13v9.6"/>
-          </svg>
-          <h3>Rendered natively, end to end</h3>
-          <p>
-            No web view, no HTML, no CSS anywhere in the desktop. Every pixel is
-            drawn by the GPU through a UI framework compiled ahead of time to
-            machine code — with no interpreter or virtual machine in the loop.
-          </p>
-          <p>
-            It animates like a native app because it is one.
-          </p>
-          <span class="tag">Swift, compiled · straight to DRM/KMS</span>
-        </div>
+      <div class="card wide">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+          <path d="M12 3.4l8.4 4.8v9.6L12 22.6 3.6 17.8V8.2z"/>
+          <path d="M3.6 8.2L12 13l8.4-4.8"/><path d="M12 13v9.6"/>
+        </svg>
+        <h3>Rendered natively, end to end</h3>
+        <p>
+          No web view, no HTML, no CSS anywhere in the desktop. Every pixel is
+          drawn by the GPU through a UI framework compiled ahead of time to
+          machine code — with no interpreter or virtual machine in the loop.
+          It animates like a native app because it is one.
+        </p>
+        <span class="tag">Swift, compiled · straight to DRM/KMS</span>
       </div>
     </div>
   </section>

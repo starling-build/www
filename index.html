@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Starling — a desktop built like one app</title>
-<meta name="description" content="Most Linux desktops are a dozen programs glued together. Starling is one application — compositor, window manager, dock and apps in a single natively rendered program. It owns the whole stack, so every kind of app has a home: Wayland and X11 both native, tiling and floating built in, real optical glass.">
-<meta property="og:title" content="Starling — a desktop built like one app">
-<meta property="og:description" content="One application instead of a dozen glued together. It owns the whole stack, so every kind of app has a home. Wayland and X11 both native. Tiling and floating built in. Real glass, rendered on the GPU.">
+<title>Starling — a new way to build a Linux desktop</title>
+<meta name="description" content="A complete Linux desktop environment drawn entirely on the GPU by one compiled program. No HTML, no CSS, no JavaScript in the desktop — effects are shaders, not filters. Wayland, X11 and Electron apps all run natively, because compatibility is a requirement, not a feature.">
+<meta property="og:title" content="Starling — a new way to build a Linux desktop">
+<meta property="og:description" content="Every pixel on the GPU. Effects are shaders, not CSS filters. And everything you already run — Wayland, X11, Electron — runs here unchanged.">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐦</text></svg>">
 <style>
@@ -97,7 +97,7 @@
   }
   .lede {
     font-size: clamp(17px, 2.2vw, 21px); color: var(--ink-dim);
-    max-width: 660px; margin: 0 auto 34px;
+    max-width: 680px; margin: 0 auto 34px;
   }
   .cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
   .btn {
@@ -120,42 +120,29 @@
 
   /* ---------- sections ---------- */
   section { padding: 96px 0; border-top: 1px solid var(--line); }
-  .section-head { max-width: 680px; margin-bottom: 52px; }
+  .section-head { max-width: 700px; margin-bottom: 52px; }
   .kicker {
     font-size: 13px; font-weight: 620; letter-spacing: 0.08em;
     text-transform: uppercase; color: var(--amber); margin-bottom: 14px;
   }
   .section-head p { color: var(--ink-dim); margin-top: 16px; font-size: 18px; }
 
-  /* ---------- the thesis ---------- */
-  .thesis p { font-size: clamp(19px, 2.4vw, 23px); line-height: 1.55;
+  /* ---------- prose ---------- */
+  .thesis p { font-size: clamp(18px, 2.2vw, 21px); line-height: 1.58;
               color: var(--ink-dim); }
-  .thesis p + p { margin-top: 24px; }
+  .thesis p + p { margin-top: 22px; }
   .thesis strong { color: var(--ink); font-weight: 600; }
 
-  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
-             margin-top: 52px; }
-  @media (max-width: 760px) { .compare { grid-template-columns: 1fr; } }
-  .col { border: 1px solid var(--line); border-radius: 12px; padding: 26px;
-         background: var(--bg-raised); }
-  .col.them { background: var(--bg-sunk); }
-  .col-label { font-size: 13px; font-weight: 620; letter-spacing: 0.06em;
-               text-transform: uppercase; margin-bottom: 18px; }
-  .col.them .col-label { color: var(--ink-faint); }
-  .col.us   .col-label { color: var(--amber); }
-  .col ul { list-style: none; margin: 0; padding: 0; }
-  .col li { font-size: 15.5px; color: var(--ink-dim); padding: 9px 0 9px 26px;
-            position: relative; border-top: 1px solid var(--line-soft); }
-  .col li:first-child { border-top: none; }
-  .col li::before {
-    position: absolute; left: 0; top: 9px; font-size: 15px; line-height: 1.6;
+  .pull {
+    border-left: 2px solid var(--amber); padding: 4px 0 4px 24px;
+    margin: 40px 0; font-size: clamp(19px, 2.5vw, 25px); line-height: 1.4;
+    color: var(--ink); letter-spacing: -0.015em; font-weight: 560;
   }
-  .col.them li::before { content: "×"; color: var(--ink-faint); }
-  .col.us   li::before { content: "✓"; color: var(--amber); }
-  .col.us li { color: var(--ink); }
 
   /* ---------- feature grid ---------- */
   .grid { display: grid; gap: 22px; grid-template-columns: repeat(2, 1fr); }
+  .grid.three { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 900px) { .grid.three { grid-template-columns: 1fr; } }
   @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
   .card {
     background: var(--bg-raised); border: 1px solid var(--line);
@@ -176,6 +163,7 @@
     display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 52px;
     align-items: center; margin-bottom: 72px;
   }
+  .feature:last-child { margin-bottom: 0; }
   .feature.reverse .feature-text { order: 2; }
   @media (max-width: 900px) {
     .feature { grid-template-columns: 1fr; gap: 28px; margin-bottom: 56px; }
@@ -194,22 +182,6 @@
   }
   .card.wide { max-width: 100%; }
   .card.wide p { max-width: 68ch; }
-
-  /* ---------- split ---------- */
-  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
-  @media (max-width: 860px) { .split { grid-template-columns: 1fr; gap: 36px; } }
-  .split img { border-radius: 10px; border: 1px solid var(--line); }
-  .split p { color: var(--ink-dim); margin-top: 16px; }
-  .bullets { list-style: none; padding: 0; margin: 22px 0 0; }
-  .bullets li {
-    position: relative; padding-left: 26px; margin-bottom: 12px;
-    color: var(--ink-dim); font-size: 15.5px;
-  }
-  .bullets li::before {
-    content: ""; position: absolute; left: 4px; top: 9px;
-    width: 7px; height: 7px; border-radius: 50%; background: var(--amber); opacity: .85;
-  }
-  .bullets strong { color: var(--ink); font-weight: 560; }
 
   /* ---------- specs ---------- */
   .specs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
@@ -262,9 +234,9 @@
       Starling
     </a>
     <nav class="nav-links">
-      <a href="#idea">The idea</a>
-      <a href="#apps">For apps</a>
-      <a href="#built-in">Built in</a>
+      <a href="#value">What's different</a>
+      <a href="#performance">Performance</a>
+      <a href="#apps">Compatibility</a>
       <a href="why.html">Why</a>
       <a href="#install">Install</a>
     </nav>
@@ -276,20 +248,19 @@
   <div class="hero">
     <div class="wrap hero-inner">
       <span class="eyebrow"><span class="dot"></span> Early preview · v0.1 · Ubuntu</span>
-      <h1>A whole desktop,<br>built like <span class="accent">one app</span></h1>
+      <h1>A new way to build<br><span class="accent">a Linux desktop</span></h1>
       <p class="lede">
         A complete desktop environment — compositor, window manager, menu bar,
-        dock and a full set of apps — designed as one program, not a dozen
-        assembled parts. That's why everything shares one look, why the things
-        other desktops bolt on are simply built in — and why every kind of
-        application has a home here.
+        dock and apps — drawn entirely on the GPU by one compiled program. No
+        HTML, no CSS, no JavaScript anywhere in it. And everything you already
+        run, on Wayland or X11, runs here unchanged.
       </p>
       <div class="cta">
         <a class="btn btn-primary" href="#install">Install Starling</a>
-        <a class="btn btn-ghost" href="#idea">See the idea</a>
+        <a class="btn btn-ghost" href="#value">What's different</a>
       </div>
       <p style="margin-top:18px; font-size:15px; color:var(--ink-dim);">
-        or <a href="why.html">read why we built a whole desktop on a GUI framework →</a>
+        or <a href="why.html">read how it's built — a whole desktop on a GUI framework →</a>
       </p>
     </div>
     <div class="wrap">
@@ -300,81 +271,155 @@
     </div>
   </div>
 
-  <section id="idea">
-    <div class="wrap narrow thesis">
-      <div class="kicker">The idea</div>
-      <h2 style="margin-bottom:28px">One program, not a pile of parts</h2>
-      <p>
-        A traditional Linux desktop is an assembly. A compositor here, a panel
-        there, a window manager, a toolkit, a theme engine, a settings daemon —
-        separate programs with separate models, passing messages and hoping they
-        agree. It works. But anything that spans two of them becomes someone's
-        extension, someone's patch, someone's fork.
-      </p>
-      <p>
-        <strong>Starling is built the way you'd build a large application.</strong>
-        The compositor, the window manager, the dock, the menu bar and the panels
-        are one program sharing one scene and one render pass. There is no gap
-        between the parts, because there are no parts.
-      </p>
-      <p>
-        That single decision is why the list below reads the way it does. None of
-        it is a plugin.
-      </p>
-
-      <div class="compare">
-        <div class="col them">
-          <div class="col-label">Assembled desktops</div>
-          <ul>
-            <li>Pick Wayland <em>or</em> X11 at the login screen</li>
-            <li>Tiling means installing a different desktop</li>
-            <li>Blur and transparency via toolkit CSS</li>
-            <li>Theming stops at the toolkit boundary</li>
-            <li>Panel and compositor negotiate over IPC</li>
-          </ul>
-        </div>
-        <div class="col us">
-          <div class="col-label">Starling</div>
-          <ul>
-            <li>Wayland and X11 both native, at once</li>
-            <li>Tiling is a switch in Settings</li>
-            <li>Glass is real optics on the GPU</li>
-            <li>One theme, everything, instantly</li>
-            <li>They're the same program</li>
-          </ul>
-        </div>
+  <section id="value">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="kicker">For Linux</div>
+        <h2>Three things Linux doesn't have yet</h2>
+        <p>
+          Starling is free software, built in the open, and these are the parts
+          worth taking seriously — whether you run it, read it, or borrow from it.
+        </p>
       </div>
 
-      <p style="margin-top:36px;">
-        <a href="why.html">Read the full story — why a desktop on a GUI framework →</a>
-      </p>
+      <div class="grid three">
+        <div class="card">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+            <rect x="3" y="3" width="18" height="18" rx="3"/>
+            <path d="M3 9h18M9 21V9"/>
+          </svg>
+          <h3>One program, not a stack of projects</h3>
+          <p>
+            The renderer, the UI framework, the window manager, the compositor and
+            an X server are a single codebase. Anything that spans two of them is a
+            change, not a negotiation across five upstreams.
+          </p>
+          <p><a href="why.html">How that's possible →</a></p>
+        </div>
+        <div class="card">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+            <path d="M13 2L4.5 13H11l-1 9 8.5-11H12z"/>
+          </svg>
+          <h3>Drawn like a game, not a web page</h3>
+          <p>
+            Every pixel goes through a GPU scene graph, from compiled machine code,
+            with no interpreter and no virtual machine in the loop. Effects are
+            shaders — real optics, not a blur filter over a screenshot.
+          </p>
+          <p><a href="#performance">See the shader work →</a></p>
+        </div>
+        <div class="card">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+            <path d="M4 6h16M4 12h16M4 18h10"/>
+            <circle cx="18.5" cy="18" r="2.5"/>
+          </svg>
+          <h3>Compatibility as a requirement</h3>
+          <p>
+            Wayland and X11 are both native, at the same time, on the same GPU path.
+            Chrome, Slack, Zoom and every Electron app just run. No session picker,
+            no XWayland caveats, no "works except".
+          </p>
+          <p><a href="#apps">What runs today →</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="performance">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="kicker">Performance</div>
+        <h2>Effects are shaders, not CSS filters</h2>
+        <p>
+          The desktop has no web stack in it at all. That isn't purism — it's what
+          makes the rest of this section possible.
+        </p>
+      </div>
+
+      <div class="feature">
+        <div class="feature-text">
+          <h3>Real glass, computed per pixel</h3>
+          <p>
+            The dock and panels don't fake depth with a blur. A fragment shader
+            gives each panel real thickness, derives a surface normal from it, and
+            bends the view ray through that normal with Snell's law — then adds a
+            Fresnel rim and a specular highlight riding the same surface.
+          </p>
+          <p>
+            Look at the text passing behind the dock: it doesn't just blur, it
+            <em>bends</em> and compresses toward the rounded ends, the way it would
+            through a real piece of glass. A blur filter cannot do that, at any
+            performance budget.
+          </p>
+          <span class="tag">Physically-based · GPU fragment shader</span>
+        </div>
+        <figure>
+          <img src="img/glass.jpg" width="1760" height="370" loading="lazy"
+               alt="Close-up of the Starling dock sitting over a web page. The text behind it is blurred and visibly bent and displaced where it passes through the dock's curved ends, with a bright rim along the edge.">
+          <figcaption>The dock over a web page — text bending through the glass.</figcaption>
+        </figure>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+            <path d="M12 3.4l8.4 4.8v9.6L12 22.6 3.6 17.8V8.2z"/>
+            <path d="M3.6 8.2L12 13l8.4-4.8"/><path d="M12 13v9.6"/>
+          </svg>
+          <h3>No interpreter under your session</h3>
+          <p>
+            The UI framework is compiled ahead of time to machine code and binds
+            only a stable C rendering core. Nothing about the desktop waits on a
+            garbage collector or a JIT to decide when your window moves.
+          </p>
+          <span class="tag">Swift, compiled · straight to DRM/KMS</span>
+        </div>
+        <div class="card">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+            <rect x="2.5" y="4" width="19" height="13" rx="2"/>
+            <path d="M8 21h8M12 17v4"/>
+          </svg>
+          <h3>Your app's pixels are never copied</h3>
+          <p>
+            Client buffers are shared straight off the GPU and composited in place —
+            no copy, no readback, no stream. Each app is still its own process, so a
+            crash takes one window and nothing else.
+          </p>
+          <span class="tag">dmabuf zero-copy · isolated per-process</span>
+        </div>
+      </div>
     </div>
   </section>
 
   <section id="apps">
     <div class="wrap narrow thesis">
-      <div class="kicker">For applications</div>
-      <h2 style="margin-bottom:28px">The desktop isn't the point.<br>Your applications are.</h2>
+      <div class="kicker">Compatibility</div>
+      <h2 style="margin-bottom:28px">App compatibility is a must,<br>not a choice</h2>
       <p>
         Nobody sits down to use a desktop. You sit down to use Chrome, Zoom, a
-        terminal, an editor — and the desktop's whole job is to carry them well.
-        Starling is built around that job, with one unusual advantage: it
-        doesn't just draw the desktop, it owns the entire stack underneath it.
+        terminal, an editor — and a desktop that can't carry them is a demo,
+        whatever else it gets right. So compatibility here isn't a roadmap item
+        to reach later. It's the constraint everything else was built around.
       </p>
       <p>
-        <strong>The rendering engine, the UI framework, the window manager, the
-        compositor — even an X server — are one codebase, changed by one
-        team.</strong> So nothing an application needs is someone else's
-        problem. When Zoom needed X11, Starling grew its own X server. When
-        apps needed portals and audio routing, those went in too. Features,
-        not negotiations across five upstream projects.
+        <strong>Both display servers live inside Starling.</strong> Chrome is a
+        Wayland client; Zoom is an X11 one. They sit on the same desktop, in the
+        same scene, on the same GPU path — sharing memory, never copied, never
+        streamed. You don't pick a session type at login, and X11 apps keep the
+        things X11 is still good at, like grabbing the whole screen to record
+        without a portal in the way.
       </p>
+
+      <div class="pull">
+        When Zoom needed X11, the desktop grew its own X server. That's the
+        practical difference owning every layer makes.
+      </div>
+
       <p>
-        That's what owning every layer buys. The kinds of applications — and
-        the kinds of ideas — that die on an assembled desktop, waiting on a
-        compositor patch, a toolkit fork and a window-manager extension to all
-        agree, are simply possible here. If your idea needs the desktop to do
-        something no desktop does, this one can learn it.
+        It cuts the other way too. If your idea needs the desktop to do something
+        no desktop does today, there's no upstream queue to join — the compositor,
+        the framework and the protocol servers are all in reach, under one licence,
+        in one tree.
       </p>
 
       <div class="specs" style="margin-top:52px">
@@ -396,17 +441,28 @@
         </div>
       </div>
     </div>
+
+    <div class="wrap" style="margin-top:64px">
+      <figure class="feature" style="display:block; margin-bottom:0">
+        <img src="img/wayland-x11.jpg" width="2000" height="1125" loading="lazy"
+             style="border-radius:10px; border:1px solid var(--line); box-shadow:0 18px 50px rgba(0,0,0,0.45);"
+             alt="The Starling desktop with Zoom Workplace open as an X11 client and Google Chrome open as a Wayland client, both composited into the same desktop over the wallpaper.">
+        <figcaption style="font-size:13.5px; color:var(--ink-faint); margin-top:12px; text-align:center;">
+          Zoom on X11 and Chrome on Wayland — one desktop, one GPU path, no session picker.
+        </figcaption>
+      </figure>
+    </div>
   </section>
 
   <section id="built-in">
     <div class="wrap">
       <div class="section-head">
         <div class="kicker">Built in</div>
-        <h2>What falls out of that</h2>
+        <h2>The things other desktops bolt on</h2>
         <p>
-          These aren't features layered on top. They're what you get when the whole
-          desktop is one application with one view of the world. Every screenshot
-          below is the real thing, captured from a running session.
+          None of this is a plugin, an extension or a fork. It's what you get when
+          the whole desktop is one application with one view of the world. Every
+          screenshot below is the real thing, captured from a running session.
         </p>
       </div>
 
@@ -433,29 +489,6 @@
 
       <div class="feature reverse">
         <div class="feature-text">
-          <h3>Wayland and X11, both native</h3>
-          <p>
-            Both display servers live inside Starling. Chrome is a Wayland
-            client; Zoom is an X11 one. They sit on the same desktop, in the
-            same scene, on the same GPU path — sharing memory, never copied,
-            never streamed.
-          </p>
-          <p>
-            You don't pick a session type at login, and X11 apps keep the things
-            X11 is still good at — grabbing the whole screen for recording,
-            without a portal in the way.
-          </p>
-          <span class="tag">Chrome · Slack · Electron · GTK on Wayland · Zoom on X11</span>
-        </div>
-        <figure>
-          <img src="img/wayland-x11.jpg" width="2000" height="1125" loading="lazy"
-               alt="The Starling desktop with Zoom Workplace open as an X11 client and Google Chrome open as a Wayland client, both composited into the same desktop over the wallpaper.">
-          <figcaption>Zoom on X11 and Chrome on Wayland — one desktop, one GPU path.</figcaption>
-        </figure>
-      </div>
-
-      <div class="feature">
-        <div class="feature-text">
           <h3>Spaces and Mission Control</h3>
           <p>
             Slide between virtual desktops, carry a window along as you go, or pull
@@ -475,7 +508,7 @@
         </figure>
       </div>
 
-      <div class="feature reverse">
+      <div class="feature">
         <div class="feature-text">
           <h3>Monitors that behave</h3>
           <p>
@@ -498,77 +531,20 @@
         </figure>
       </div>
 
-      <div class="feature">
-        <div class="feature-text">
-          <h3>Real glass, not a CSS trick</h3>
-          <p>
-            The dock and panels don't fake depth with a blur filter. A shader
-            gives each panel real thickness, derives a surface normal from it,
-            and bends the view ray through that normal with Snell's law — then
-            adds a Fresnel rim and a specular highlight riding the same surface.
-          </p>
-          <p>
-            Look at the text passing behind the dock: it doesn't just blur, it
-            <em>bends</em> and compresses toward the rounded ends, the way it
-            would through a real piece of glass. A blur filter cannot do that.
-          </p>
-          <span class="tag">Physically-based · GPU fragment shader</span>
-        </div>
-        <figure>
-          <img src="img/glass.jpg" width="1760" height="370" loading="lazy"
-               alt="Close-up of the Starling dock sitting over a web page. The text behind it is blurred and visibly bent and displaced where it passes through the dock's curved ends, with a bright rim along the edge.">
-          <figcaption>The dock over a web page — text bending through the glass.</figcaption>
-        </figure>
-      </div>
-
       <div class="card wide">
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-          <path d="M12 3.4l8.4 4.8v9.6L12 22.6 3.6 17.8V8.2z"/>
-          <path d="M3.6 8.2L12 13l8.4-4.8"/><path d="M12 13v9.6"/>
+          <rect x="3" y="4" width="18" height="15" rx="2"/>
+          <path d="M3 9h18"/><circle cx="6.5" cy="6.5" r=".8" fill="currentColor"/>
         </svg>
-        <h3>Rendered natively, end to end</h3>
+        <h3>And a full set of apps, in the same framework</h3>
         <p>
-          No web view, no HTML, no CSS anywhere in the desktop. Every pixel is
-          drawn by the GPU through a UI framework compiled ahead of time to
-          machine code — with no interpreter or virtual machine in the loop.
-          It animates like a native app because it is one.
+          Files, Terminal, Settings, Calculator, Text Editor, Image Viewer and an
+          App Store that installs from the Ubuntu archive — each one written in the
+          same framework as the shell that hosts it, and each one its own process.
+          One theme change reaches all of them at once, because there's no toolkit
+          boundary for it to stop at.
         </p>
-        <span class="tag">Swift, compiled · straight to DRM/KMS</span>
-      </div>
-    </div>
-  </section>
-
-  <section id="desktop">
-    <div class="wrap">
-      <div class="section-head">
-        <div class="kicker">The desktop</div>
-        <h2>And it's a complete desktop</h2>
-        <p>
-          Spaces you can slide between, Mission Control, multi-monitor that handles
-          being unplugged, and a set of first-party apps that ship with it.
-        </p>
-      </div>
-      <div class="split">
-        <div>
-          <ul class="bullets">
-            <li><strong>Spaces and Mission Control.</strong> Slide between virtual
-              desktops, carry a window along as you go, or pull back and see
-              everything at once.</li>
-            <li><strong>Monitors that behave.</strong> Plug a display in and it
-              arrives with its own dock, menu bar and spaces. Unplug it and your
-              windows come home rather than vanishing.</li>
-            <li><strong>Apps included.</strong> Files, Terminal, Settings,
-              Calculator, Text Editor, Image Viewer, and an App Store that installs
-              from the Ubuntu archive.</li>
-            <li><strong>Crashes stay contained.</strong> Every app is its own
-              process sharing GPU buffers with the desktop — zero copies, and one
-              app falling over takes only its own window.</li>
-          </ul>
-        </div>
-        <div>
-          <img src="img/clean.jpg" width="1800" height="1013" loading="lazy"
-               alt="The Starling desktop with no windows open — wallpaper, menu bar and glass dock.">
-        </div>
+        <span class="tag">First-party apps · one theme, everything, instantly</span>
       </div>
     </div>
   </section>

@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Why Starling — a whole desktop built on a GUI framework</title>
-<meta name="description" content="A desktop environment and a GUI framework already do most of the same work — drawing, layout, input, compositing, animation. Qt, Sailfish and Fuchsia have each built part of a shell on that overlap. This is where each of them stopped, what was left underneath, and the story of taking a general-purpose framework all the way down to the display.">
+<meta name="description" content="A desktop and a GUI framework already do most of the same work — drawing, layout, input, compositing, animation. Build the desktop on the framework and tiling, spaces, Mission Control and shader effects work on real applications for free. The case for the approach, why Flutter's embedder API is the right seam, and why the framework layer was rewritten in Swift.">
 <meta property="og:title" content="Why we built a whole desktop on a GUI framework">
-<meta property="og:description" content="Qt, Sailfish and Fuchsia each took a GUI framework part-way into the shell. This is what was left underneath — and the story of building it.">
+<meta property="og:description" content="Once an app's surface is a widget, tiling is just a layout and Mission Control is just an animated grid. The case for building a desktop on a GUI framework — and why Flutter, and why Swift.">
 <meta property="og:type" content="article">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐦</text></svg>">
 <style>
@@ -247,9 +247,10 @@
       <h1>Why build a whole desktop on a <span class="accent">GUI framework</span>?</h1>
       <p class="lede">
         A desktop environment and a modern GUI framework already do almost the same
-        work. Qt, Sailfish and Fuchsia have each built part of a shell on that
-        overlap — and each stopped at a different floor. This is where they stopped,
-        what was left underneath, and how it got built.
+        work. Building the desktop <em>on</em> the framework isn't a stunt — it's why
+        tiling, spaces, Mission Control and the glass all work on real applications
+        for free. Here's the case for the approach, and for the two choices
+        underneath it: Flutter, and Swift.
       </p>
     </div>
   </div>
@@ -448,51 +449,16 @@
 
   <section>
     <div class="wrap narrow prose">
-      <div class="kicker">The question</div>
-      <h2>It has been tried.<br>Here's where it stops.</h2>
+      <div class="kicker">The merit</div>
+      <h2>What building on a framework buys</h2>
       <p>
-        If the overlap is that large, the absence needs explaining. And there is
-        a real reason, not just inertia. A GUI framework is built to be a
-        <strong>client</strong> of the desktop. It expects to be handed a window
-        to draw in, to be fed input events, to submit its finished frames to
-        something else that owns the screen. It assumes there is already a
-        compositor above it, a display server, a session — a world it plugs into.
+        The obvious answer is the work you skip. Start a desktop from an empty file
+        and you write a scene graph, a layout engine, input hit-testing, a text
+        stack, an animation system and a widget set before you have drawn a single
+        window. All of that already exists, refined over years, inside any mature
+        GUI framework. Starting there isn't a shortcut so much as declining to
+        rewrite a solved problem.
       </p>
-      <p>
-        A desktop is the opposite. It is the <strong>server</strong>. It owns the
-        display and drives the GPU directly. It hands out the windows. It reads
-        the raw input devices and decides who gets each event. It composites
-        everyone <em>else's</em> pixels — programs it didn't write, in toolkits it
-        doesn't control — into one scene.
-      </p>
-      <p>
-        Building a desktop on a framework means turning it upside down: taking the
-        thing designed to sit at the top of the stack and placing it at the very
-        bottom, then teaching it to be the server for everyone above it. That
-        inversion is the hard part — and plenty of people have done part of it.
-      </p>
-      <p>
-        <strong>The idea is not unheard of. It has just never gone all the way
-        down.</strong> One tradition builds a <em>bespoke</em> scene toolkit for the
-        shell — GNOME's Shell on Clutter, Enlightenment on EFL. The other reaches
-        for a general-purpose framework, and gets further than people assume: Qt
-        ships a Wayland compositor module whose own example is titled <em>write a
-        compositor in pure QML</em>; Sailfish OS has shipped Lipstick, a QML
-        compositor, for a decade; and Google went furthest of all — Fuchsia's
-        system UI, Armadillo, is written in Flutter.
-      </p>
-      <p>
-        Each stops at a different floor. The Qt shells keep a QML runtime and a
-        JavaScript engine underneath the session. Fuchsia's Flutter shell draws the
-        interface and hands it to Scenic — a separate system compositor that is the
-        thing actually owning the screen. Lipstick is a phone homescreen, not a
-        desktop hosting foreign X11 clients across several monitors.
-      </p>
-      <div class="pull">
-        What was left was the bottom: the same framework you'd write an ordinary app
-        in, compiled to machine code, serving as the compositor and the session both
-        — with nothing under it but the kernel.
-      </div>
 
       <div class="compare">
         <div class="col us">
@@ -516,6 +482,215 @@
           </ul>
         </div>
       </div>
+
+      <p style="margin-top:44px">
+        But the saved effort is the smaller half of the argument. <strong>The real
+        payoff arrives the moment an app's surface becomes a widget</strong> — a node
+        in the same tree as the dock and the menu bar. From then on, everything the
+        framework already knows how to do to a widget, it can do to a running copy
+        of Chrome.
+      </p>
+
+      <div class="lessons">
+        <div class="lesson">
+          <h3>Tiling is a layout</h3>
+          <p>
+            Master-and-stack isn't a window-manager feature here. It's a layout
+            widget, the same kind that arranges a list — with applications as its
+            children instead of buttons.
+          </p>
+        </div>
+        <div class="lesson">
+          <h3>Mission Control is an animated grid</h3>
+          <p>
+            Scale every window down, arrange the thumbnails, animate between the two
+            states. A framework has done that since its first release; the only new
+            part is what the thumbnails contain.
+          </p>
+        </div>
+        <div class="lesson">
+          <h3>Spaces are a page view</h3>
+          <p>
+            Sliding between virtual desktops is a horizontal page controller. Drag a
+            window along as you switch and you are reparenting a widget mid-flight,
+            which the framework also already handles.
+          </p>
+        </div>
+        <div class="lesson">
+          <h3>Glass is a shader on a widget</h3>
+          <p>
+            The dock refracts what passes behind it because a fragment shader runs
+            over its subtree. It works over Chrome for exactly the reason it works
+            over a button: neither is a special case.
+          </p>
+        </div>
+      </div>
+
+      <div class="pull">
+        None of those were features anyone sat down to implement. They are what a
+        layout and animation system does when you point it at applications instead
+        of buttons.
+      </div>
+
+      <p>
+        The same logic runs through the boring parts. One theme reaches every app
+        because there is no toolkit boundary for it to stop at. A settings panel and
+        a window decoration are written the same way, by the same person, in the
+        same language. And the shell is ordinary application code — anyone who can
+        write an app for this framework can change the desktop itself.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap narrow prose">
+      <div class="kicker">The choice</div>
+      <h2>Why Flutter</h2>
+      <p>
+        Plenty of frameworks do layout and GPU compositing. Very few will let you
+        take the floor out from under them.
+      </p>
+
+      <ol class="steps">
+        <li>
+          <h3>It has a seam where the platform should be</h3>
+          <p>
+            The engine exposes a documented C API — the embedder API — in which the
+            <em>host</em> supplies the rendering surface, the input events and the
+            vsync signal. Most frameworks assume a window system exists and refuse to
+            start without one. Flutter assumes nothing and asks you to provide it,
+            which is exactly the shape of the problem: we hand it DRM/KMS where a
+            window would normally go.
+          </p>
+          <p>
+            This isn't a hack discovered by accident. flutter-pi drives KMS/DRM
+            through the same seam, and Sony ships an embedded-Linux embedder built on
+            it. The API is working as designed; the unusual part is what we pointed
+            it at.
+          </p>
+          <span class="tag">embedder.h · host supplies surface, input, vsync</span>
+        </li>
+        <li>
+          <h3>It draws every pixel itself</h3>
+          <p>
+            Flutter renders its own widgets rather than wrapping native ones. For an
+            app that's a trade-off — you don't inherit the platform's look. For a
+            desktop it's the requirement: the thing that owns the screen has to draw
+            everything on it, and a framework that already refuses to delegate has
+            nothing to unlearn.
+          </p>
+          <span class="tag">no native widgets · nothing to emulate</span>
+        </li>
+        <li>
+          <h3>The expensive machinery is already GPU-resident</h3>
+          <p>
+            A retained scene graph, GPU compositing, clipping, blending and
+            animation driven at the display's refresh rate are not features we added
+            for the desktop. They are what the engine does every frame for the
+            smallest app, and they are precisely what a compositor needs.
+          </p>
+          <span class="tag">retained scene · refresh-rate animation</span>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap narrow prose">
+      <div class="kicker">The choice</div>
+      <h2>Why Swift</h2>
+      <p>
+        Flutter's engine is C++, but the framework layer above it — widgets, layout,
+        render objects — is Dart, and Dart brings a virtual machine and a garbage
+        collector. For an application that is a perfectly reasonable trade. For a
+        session it is the wrong foundation.
+      </p>
+      <p>
+        <strong>A compositor that misses a frame doesn't drop it in one app.</strong>
+        It drops it for everything on screen at once. A collector pause is a visible
+        stutter on every window you happen to be dragging. So the framework layer was
+        rewritten — and the language it was rewritten in had to earn its place.
+      </p>
+
+      <div class="lessons">
+        <div class="lesson">
+          <h3>Compiled, not interpreted</h3>
+          <p>
+            Swift compiles ahead of time to machine code. There is no interpreter and
+            no JIT between the widget tree and the CPU, and nothing that has to warm
+            up before your desktop feels fast.
+          </p>
+        </div>
+        <div class="lesson">
+          <h3>Counted, not collected</h3>
+          <p>
+            ARC settles retain and release at compile time. It isn't a tracing
+            collector: nothing scans the heap while you drag a window, so there is no
+            pause to land badly in the middle of an animation.
+          </p>
+        </div>
+        <div class="lesson">
+          <h3>It speaks C natively</h3>
+          <p>
+            The Swift compiler embeds Clang, so the engine's <code>embedder.h</code>
+            is imported straight through a module map. No FFI layer, no generated
+            bindings, no marshalling on the frame path — Swift calls the engine the
+            way C would.
+          </p>
+        </div>
+        <div class="lesson">
+          <h3>Expressive enough to carry the model</h3>
+          <p>
+            Flutter's widget, element and render-object design survives the move
+            largely intact — protocols and generics express it without contortions.
+            That matters when the port runs to a quarter of a million lines.
+          </p>
+        </div>
+      </div>
+
+      <p style="margin-top:44px">
+        Memory safety without a collector is the short version. A session runs for
+        weeks; it cannot leak, and it cannot pause.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap narrow prose">
+      <div class="kicker">The hard part</div>
+      <h2>A framework is a client. A desktop is a server.</h2>
+      <p>
+        None of the above is free, because a GUI framework is built to be a
+        <strong>client</strong> of the desktop. It expects to be handed a window to
+        draw in, to be fed input events, to submit its finished frames to something
+        else that owns the screen. It assumes there is already a compositor above
+        it, a display server, a session — a world it plugs into.
+      </p>
+      <p>
+        A desktop is the opposite. It is the <strong>server</strong>. It owns the
+        display and drives the GPU directly. It hands out the windows. It reads the
+        raw input devices and decides who gets each event. It composites everyone
+        <em>else's</em> pixels — programs it didn't write, in toolkits it doesn't
+        control — into one scene. Building a desktop on a framework means taking the
+        thing designed for the top of the stack and placing it at the very bottom.
+      </p>
+      <p>
+        That inversion is the work, and others have done parts of it. GNOME's Shell
+        builds a <em>bespoke</em> scene toolkit, Clutter, for the shell itself. Qt
+        ships a Wayland compositor module whose own example is titled <em>write a
+        compositor in pure QML</em>. Sailfish OS has shipped Lipstick, a QML
+        compositor, for a decade. Google writes Fuchsia's system UI in Flutter. And
+        Enlightenment has been a Wayland compositor built on EFL — a general-purpose
+        toolkit Samsung ships on Tizen — since 2015.
+      </p>
+      <p>
+        They stop in different places. The Qt shells keep a QML runtime and a
+        JavaScript engine under the session. Fuchsia's Flutter shell hands its
+        interface to Scenic, a separate compositor that owns the screen. Lipstick is
+        a phone homescreen. Enlightenment goes all the way down — though EFL grew
+        outward from the window manager that needed it, rather than being adopted
+        from outside. What follows is what the inversion took here.
+      </p>
     </div>
   </section>
 

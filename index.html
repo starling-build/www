@@ -269,7 +269,7 @@
       <a href="#real">What "real" means</a>
       <a href="#velocity">Why it matters</a>
       <a href="#built-in">The desktop</a>
-      <a href="why.html">How it's built</a>
+      <a href="why.html">Why &amp; how</a>
       <a href="#install">Install</a>
     </nav>
   </div>
@@ -321,7 +321,10 @@
         </div>
       </div>
       <p class="specs-note">
-        Line count excludes vendored dependencies. Both repositories are public —
+        Line count excludes vendored dependencies. Most of it — about 273K — is the
+        Flutter→Swift framework port that the whole system rests on; the desktop
+        itself, its Wayland and X11 servers and the bundled apps come to roughly
+        62K. Both repositories are public —
         <a href="https://github.com/starling-build/starling-desktop">desktop</a> and
         <a href="https://github.com/starling-build/starling-engine">engine</a> — so
         every number here is yours to check.
@@ -370,7 +373,7 @@
           <ul>
             <li>Drives the GPU through DRM/KMS, as the session</li>
             <li>Runs software it didn't write — Chrome, Slack, Zoom</li>
-            <li>Its own Wayland compositor and X server</li>
+            <li>Speaks Wayland and X11 natively, at once</li>
             <li>Every screenshot here is a running session</li>
           </ul>
         </div>

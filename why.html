@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Why Starling — a whole desktop built on a GUI framework</title>
-<meta name="description" content="A desktop environment and a GUI framework already do most of the same work — drawing, layout, input, compositing, animation. So why is no mainstream desktop built on top of one? This is the reason, and the story of building a full desktop on a modern framework anyway.">
+<meta name="description" content="A desktop environment and a GUI framework already do most of the same work — drawing, layout, input, compositing, animation. Qt, Sailfish and Fuchsia have each built part of a shell on that overlap. This is where each of them stopped, what was left underneath, and the story of taking a general-purpose framework all the way down to the display.">
 <meta property="og:title" content="Why we built a whole desktop on a GUI framework">
-<meta property="og:description" content="A framework and a desktop overlap almost entirely. The half that's missing is the reason it's rarely done — and the story of building it.">
+<meta property="og:description" content="Qt, Sailfish and Fuchsia each took a GUI framework part-way into the shell. This is what was left underneath — and the story of building it.">
 <meta property="og:type" content="article">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐦</text></svg>">
 <style>
@@ -233,7 +233,7 @@
       <a href="index.html#real">What "real" means</a>
       <a href="index.html#velocity">Why it matters</a>
       <a href="index.html#built-in">The desktop</a>
-      <a class="here" href="why.html">How it's built</a>
+      <a class="here" href="why.html">Why &amp; how</a>
       <a href="index.html#install">Install</a>
     </nav>
   </div>
@@ -246,9 +246,10 @@
       <span class="eyebrow"><span class="dot"></span> The story · why &amp; how</span>
       <h1>Why build a whole desktop on a <span class="accent">GUI framework</span>?</h1>
       <p class="lede">
-        A desktop environment and a modern GUI framework already do almost the
-        same work. So why is no mainstream desktop built on one? The answer to
-        that question is also the reason this project exists.
+        A desktop environment and a modern GUI framework already do almost the same
+        work. Qt, Sailfish and Fuchsia have each built part of a shell on that
+        overlap — and each stopped at a different floor. This is where they stopped,
+        what was left underneath, and how it got built.
       </p>
     </div>
   </div>
@@ -448,7 +449,7 @@
   <section>
     <div class="wrap narrow prose">
       <div class="kicker">The question</div>
-      <h2>Then why has nobody done it?</h2>
+      <h2>It has been tried.<br>Here's where it stops.</h2>
       <p>
         If the overlap is that large, the absence needs explaining. And there is
         a real reason, not just inertia. A GUI framework is built to be a
@@ -468,12 +469,30 @@
         Building a desktop on a framework means turning it upside down: taking the
         thing designed to sit at the top of the stack and placing it at the very
         bottom, then teaching it to be the server for everyone above it. That
-        inversion is the hard part, and it's why the obvious idea is rarely tried.
-        The closest prior art — GNOME's Shell on Clutter, Enlightenment on EFL —
-        builds a <em>bespoke</em> scene toolkit <em>for</em> the shell. The bet here
-        is different: use the same general-purpose framework you'd write ordinary
-        apps in, so the desktop and the apps are the same kind of thing.
+        inversion is the hard part — and plenty of people have done part of it.
       </p>
+      <p>
+        <strong>The idea is not unheard of. It has just never gone all the way
+        down.</strong> One tradition builds a <em>bespoke</em> scene toolkit for the
+        shell — GNOME's Shell on Clutter, Enlightenment on EFL. The other reaches
+        for a general-purpose framework, and gets further than people assume: Qt
+        ships a Wayland compositor module whose own example is titled <em>write a
+        compositor in pure QML</em>; Sailfish OS has shipped Lipstick, a QML
+        compositor, for a decade; and Google went furthest of all — Fuchsia's
+        system UI, Armadillo, is written in Flutter.
+      </p>
+      <p>
+        Each stops at a different floor. The Qt shells keep a QML runtime and a
+        JavaScript engine underneath the session. Fuchsia's Flutter shell draws the
+        interface and hands it to Scenic — a separate system compositor that is the
+        thing actually owning the screen. Lipstick is a phone homescreen, not a
+        desktop hosting foreign X11 clients across several monitors.
+      </p>
+      <div class="pull">
+        What was left was the bottom: the same framework you'd write an ordinary app
+        in, compiled to machine code, serving as the compositor and the session both
+        — with nothing under it but the kernel.
+      </div>
 
       <div class="compare">
         <div class="col us">
@@ -539,8 +558,8 @@
           <p>
             Here's the part it's easy to mislabel. The compositor is the framework —
             the one thing that owns the screen and draws every pixel. What gets built
-            beside it isn't a second compositor; it's a <em>protocol server</em>. Tens
-            of thousands of lines of C speak the Wayland wire protocol so existing
+            beside it isn't a second compositor; it's a <em>protocol server</em>. A few
+            thousand lines of hand-written C speak the Wayland wire protocol so existing
             Wayland apps can connect, and an X11 server does the same for X11 apps.
             They're translators, not compositors: each takes a client's surface and
             hands it to the framework.

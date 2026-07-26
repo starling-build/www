@@ -224,6 +224,23 @@
   .card.wide { max-width: 100%; }
   .card.wide p { max-width: 68ch; }
 
+  /* ---------- bridge to the essay ---------- */
+  .bridge {
+    margin-top: 64px; padding: 36px 38px;
+    border: 1px solid var(--line); border-radius: 14px;
+    background:
+      radial-gradient(120% 150% at 0% 0%, rgba(240,160,42,0.07), transparent 62%),
+      var(--bg-raised);
+    display: grid; grid-template-columns: 1fr auto; gap: 30px; align-items: center;
+  }
+  .bridge h3 { font-size: 22px; margin-bottom: 12px; }
+  .bridge p { color: var(--ink-dim); font-size: 16px; max-width: 64ch; }
+  .bridge .btn { white-space: nowrap; }
+  @media (max-width: 820px) {
+    .bridge { grid-template-columns: 1fr; gap: 24px; padding: 30px 26px; }
+    .bridge .btn { justify-self: start; }
+  }
+
   /* ---------- install ---------- */
   .install { background: var(--bg-raised); border: 1px solid var(--line);
              border-radius: 14px; padding: 38px; }
@@ -569,11 +586,18 @@
         </div>
       </div>
 
-      <p style="margin-top:44px; color:var(--ink-dim); font-size:17px;">
-        The architecture that makes this possible — a GUI framework turned upside
-        down and made to serve as the display server —
-        <a href="why.html">is its own story →</a>
-      </p>
+      <div class="bridge">
+        <div>
+          <div class="kicker">The idea</div>
+          <h3>A good idea, and AI to build it</h3>
+          <p>
+            That's all this is. Everything above fell out of one decision about how
+            a desktop should be put together — and AI is what made building it
+            possible. Come see how the system works.
+          </p>
+        </div>
+        <a class="btn btn-primary" href="why.html">How it's built →</a>
+      </div>
     </div>
   </section>
 

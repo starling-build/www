@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Why Starling — a whole desktop built on a GUI framework</title>
-<meta name="description" content="A desktop and a GUI framework already do most of the same work — drawing, layout, input, compositing, animation. Build the desktop on the framework and tiling, spaces, Mission Control and shader effects work on real applications for free. The case for the approach, why Flutter's embedder API is the right seam, and why the framework layer was rewritten in Swift.">
+<meta name="description" content="A desktop and a GUI framework already do most of the same work — drawing, layout, input, compositing, animation. Build the desktop on the framework and tiling, spaces, Mission Control and shader effects work on real applications for free. The case for the approach, why Flutter's embedder API is the right seam, why the framework layer was rewritten in Swift, and why one curious person with AI could build it at all.">
 <meta property="og:title" content="Why we built a whole desktop on a GUI framework">
-<meta property="og:description" content="Once an app's surface is a widget, tiling is just a layout and Mission Control is just an animated grid. The case for building a desktop on a GUI framework — and why Flutter, and why Swift.">
+<meta property="og:description" content="Once an app's surface is a widget, tiling is just a layout and Mission Control is just an animated grid. The case for building a desktop on a GUI framework — why Flutter, why Swift, and why the idea was never the expensive part.">
 <meta property="og:type" content="article">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐦</text></svg>">
 <style>
@@ -254,8 +254,8 @@
         A desktop environment and a modern GUI framework already do almost the same
         work. Building the desktop <em>on</em> the framework isn't a stunt — it's why
         tiling, spaces, Mission Control and the glass all work on real applications
-        for free. Here's the case for the approach, and for the two choices
-        underneath it: Flutter, and Swift.
+        for free. Here's the case for the approach, the two choices underneath it —
+        Flutter, and Swift — and why one person could build it at all.
       </p>
     </div>
   </div>
@@ -454,6 +454,39 @@
 
   <section>
     <div class="wrap narrow prose">
+      <div class="kicker">The obstacle</div>
+      <h2>Having the idea was never the hard part</h2>
+      <p>
+        This is where a thought like that normally stops. I could see the shape of
+        it clearly enough. What I couldn't see was how one person finds the years
+        that building it would take.
+      </p>
+      <p>
+        Because the folklore isn't wrong. Even standing on a framework, the half
+        that's left is enormous — a Wayland server, an X11 server, window
+        management, multi-monitor with hot-plug, portals, a set of applications.
+        That has always been work for teams, measured in decades. The reason there
+        are a handful of Linux desktops rather than hundreds isn't that nobody else
+        ever had an idea. It's that the idea was never the expensive part.
+      </p>
+      <p>
+        <strong>AI is what closed that gap.</strong> Not the curiosity, and not the
+        architecture — the question I wanted answered was mine, the bet on building
+        a desktop <em>as</em> a GUI framework was mine, and so was every judgement
+        about what Starling should be. What AI made possible was carrying it out:
+        writing the hundreds of thousands of lines that stand between an idea and a
+        desktop you can log into, fast enough that one person could stay ahead of
+        it and keep steering.
+      </p>
+      <div class="pull">
+        A curious person with a bold idea is not new. Being able to act on it alone
+        is.
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap narrow prose">
       <div class="kicker">The merit</div>
       <h2>What building on a framework buys</h2>
       <p>
@@ -540,8 +573,8 @@
       <p>
         The same logic runs through the boring parts. One theme reaches every app
         because there is no toolkit boundary for it to stop at. A settings panel and
-        a window decoration are written the same way, by the same person, in the
-        same language. And the shell is ordinary application code — anyone who can
+        a window decoration are written the same way, in the same language, against
+        the same framework. And the shell is ordinary application code — anyone who can
         write an app for this framework can change the desktop itself.
       </p>
     </div>
@@ -882,7 +915,8 @@
         that you choose at the login screen and sign in to, running third-party
         apps on Wayland and X11 alike. The idea held up: most of a desktop really
         was already sitting inside a framework, waiting for someone to stand it on
-        its head and build the missing half. This page is that half's story.
+        its head and build the missing half. One person was enough to find that
+        out — which, not long ago, it would not have been.
       </p>
       <div class="cta">
         <a class="btn btn-primary" href="index.html#install">Install Starling</a>

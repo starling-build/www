@@ -187,12 +187,13 @@
     background: var(--bg-raised); border: 1px solid var(--line);
     border-radius: 12px; padding: 26px;
   }
-  .lesson.wide { grid-column: 1 / -1; }
   .lesson h3 { font-size: 17px; margin-bottom: 10px; }
   .lesson p { color: var(--ink-dim); font-size: 15px; }
   .lesson p + p { margin-top: 10px; }
-  .lesson code { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo,
-                 Consolas, monospace; font-size: 13.5px; color: var(--amber-soft); }
+  .prose code, .lesson code {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.86em; color: var(--amber-soft);
+  }
 
   /* ---------- close ---------- */
   .close { text-align: center; }
@@ -642,39 +643,22 @@
           </p>
         </div>
         <div class="lesson">
-          <h3>It speaks C natively</h3>
+          <h3>It speaks C and C++ natively</h3>
           <p>
-            The Swift compiler embeds Clang, so the engine's <code>embedder.h</code>
-            is imported straight through a module map. No FFI layer, no generated
-            bindings, no marshalling on the frame path — Swift calls the engine the
-            way C would.
-          </p>
-        </div>
-        <div class="lesson wide">
-          <h3>And C++ — which is where the engine actually lives</h3>
-          <p>
-            The embedder API is C, but almost everything worth reaching is C++:
-            <code>Canvas</code>, <code>Path</code>, <code>Paragraph</code>,
-            <code>SceneBuilder</code>, the image codecs, the fragment-shader
-            machinery. In stock Flutter those objects reach the framework through
-            <code>dart:ui</code>, bound to the Dart VM. <strong>Swift stands exactly
-            where <code>dart:ui</code> stood</strong> — thirty-three C++ bridge
-            headers imported directly, with C++ interoperability enabled across the
-            framework and the shell.
-          </p>
-          <p>
-            That is the difference between a port and a wrapper. Without direct C++
-            interop the alternative is a hand-written C shim around every engine
-            class — thousands of lines of glue to maintain, and a marshalling layer
-            sitting on the path every single frame takes. Swift removes the layer
-            instead of hiding it.
+            The Swift compiler embeds Clang, so engine headers import straight
+            through a module map — the C embedder API and the C++ classes beneath it
+            alike. No FFI layer, no generated bindings, no shim in between.
           </p>
         </div>
       </div>
 
       <p style="margin-top:44px">
-        Memory safety without a collector is the short version. A session runs for
-        weeks; it cannot leak, and it cannot pause.
+        That last one is the difference between a port and a wrapper. In stock
+        Flutter the engine's C++ classes reach the framework through
+        <code>dart:ui</code>, bound to the Dart VM; here Swift takes that seat
+        directly. Without it the alternative is a hand-written C shim around every
+        engine class — thousands of lines of glue, and a marshalling layer on the
+        path every frame takes.
       </p>
     </div>
   </section>

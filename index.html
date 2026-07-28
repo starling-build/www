@@ -624,15 +624,13 @@
       </div>
       <div class="install">
         <a class="btn btn-primary" href="https://github.com/starling-build/starling-desktop/releases/download/v0.2/starling-desktop_0.2-1_amd64.deb">Download starling-desktop 0.2 (.deb, 53 MB) ↓</a>
-        <pre><span class="c"># Ubuntu 25.10 or 26.04, amd64. Starling needs a Wayland-capable login</span>
+        <pre><span class="c"># Ubuntu 26.04 LTS, amd64. Starling needs a Wayland-capable login</span>
 <span class="c"># manager. Ubuntu Desktop already has one (GDM); on Server or a minimal</span>
 <span class="c"># install, add it first:</span>
 <span class="p">sudo</span> apt install gdm3
 
-<span class="c"># Download the package (or use the button above):</span>
-wget https://github.com/starling-build/starling-desktop/releases/download/v0.2/starling-desktop_0.2-1_amd64.deb
-
-<span class="c"># Install Starling and its runtime dependencies:</span>
+<span class="c"># Download and install Starling with its runtime dependencies:</span>
+curl -fLO https://github.com/starling-build/starling-desktop/releases/download/v0.2/starling-desktop_0.2-1_amd64.deb
 <span class="p">sudo</span> apt install ./starling-desktop_0.2-1_amd64.deb
 
 <span class="c"># Log out (or reboot). At the login screen click your name, open the</span>
@@ -641,7 +639,7 @@ wget https://github.com/starling-build/starling-desktop/releases/download/v0.2/s
           <strong>This is an early preview.</strong> Starling runs a real desktop on
           real hardware today, but it is version 0.2: expect rough edges, missing
           settings, and apps that still need work. Verified on AMD graphics under
-          Ubuntu 25.10 and a fresh Ubuntu 26.04. The package pulls in a login
+          a fresh Ubuntu 26.04. The package pulls in a login
           manager if you don't already have one.
         </div>
       </div>
